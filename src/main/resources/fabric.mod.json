@@ -1,0 +1,42 @@
+{
+	"schemaVersion": 1,
+	"id": "blazin-hide-coordinates",
+	"version": "${version}",
+	"name": "Blazin Hide Coordinates",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"Me!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/blazin-hide-coordinates/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.blazinblaze.BlazinHideCoordinates"
+		],
+		"client": [
+			"net.blazinblaze.BlazinHideCoordinatesClient"
+		]
+	},
+	"mixins": [
+		"blazin-hide-coordinates.mixins.json",
+		{
+			"config": "blazin-hide-coordinates.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.17.2",
+		"minecraft": "~1.21.8",
+		"java": ">=21",
+		"fabric-api": "*",
+		"fabric-key-binding-api-v1": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
