@@ -29,23 +29,29 @@ public class HideCoordinatesMixin {
         //Add F6 disabling
         //See what ChunkSectionPos means
         CoordinatesYAML config = BlazinHideCoordinatesClient.config;
-        if(config != null && config.getShouldHide(CoordinatesYAML.shouldHideCoordinates) instanceof Boolean bool && bool) {
+        if(config != null && config.getCoordinateVal(CoordinatesYAML.shouldHideCoordinates) instanceof Boolean bool && bool) {
+            boolean shouldHideY = config.getCoordinateVal(CoordinatesYAML.hideYCoordinates) instanceof Boolean hide ? hide : false;
             for(String str : list) {
                 if(str.startsWith("XYZ:")) {
-                    Matcher matcher = pattern.matcher(str);
-                    ArrayList<Float> floats = new ArrayList<Float>();
-                    for(int i = 0; i < 3 & matcher.find(); i++) {
-                        try {
-                            floats.add(Float.parseFloat(matcher.group()));
-                        }catch(NumberFormatException e) {
-                            floats.add(0F);
-                            BlazinHideCoordinates.LOGGER.warn("Error whilst gettng floats for XYZ: ", e);
-                        }
-                    }
-
-                    if(floats.size() >= 2) {
+                    if(shouldHideY) {
                         int index = list.indexOf(str);
-                        list.set(index, String.format(Locale.ROOT, "XYZ: ??? / %.5f / ???", floats.get(1)));
+                        list.set(index, "XYZ: ??? / ??? / ???");
+                    }else {
+                        Matcher matcher = pattern.matcher(str);
+                        ArrayList<Float> floats = new ArrayList<Float>();
+                        for(int i = 0; i < 3 & matcher.find(); i++) {
+                            try {
+                                floats.add(Float.parseFloat(matcher.group()));
+                            }catch(NumberFormatException e) {
+                                floats.add(0F);
+                                BlazinHideCoordinates.LOGGER.warn("Error whilst gettng floats for XYZ: ", e);
+                            }
+                        }
+
+                        if(floats.size() >= 2) {
+                            int index = list.indexOf(str);
+                            list.set(index, String.format(Locale.ROOT, "XYZ: ??? / %.5f / ???", floats.get(1)));
+                        }
                     }
                 }else if(str.startsWith("Block:")) {
                     Matcher matcher = pattern.matcher(str);
@@ -62,14 +68,23 @@ public class HideCoordinatesMixin {
 
                     if(ints.size() >= 4) {
                         int index = list.indexOf(str);
-                        list.set(index, String.format(Locale.ROOT, "Block: ??? / %d / ??? [%d %d %d]", ints.get(1), ints.get(3), ints.get(4), ints.get(5)));
+                        if(shouldHideY) {
+                            list.set(index, String.format(Locale.ROOT, "Block: ??? / ??? / ??? [%d %d %d]", ints.get(3), ints.get(4), ints.get(5)));
+                        }else {
+                            list.set(index, String.format(Locale.ROOT, "Block: ??? / %d / ??? [%d %d %d]", ints.get(1), ints.get(3), ints.get(4), ints.get(5)));
+                        }
                     }
                 }else if(str.startsWith("Chunk:")) {
-                    ArrayList<Integer> ints = getInts(str);
-
-                    if(ints.size() >= 2) {
+                    if(shouldHideY) {
                         int index = list.indexOf(str);
-                        list.set(index, String.format(Locale.ROOT, "Chunk: ??? %d ??? [??? ??? in r.???.???.mca]", ints.get(1)));
+                        list.set(index, "Chunk: ??? ??? ??? [??? ??? in r.???.???.mca]");
+                    }else {
+                        ArrayList<Integer> ints = getInts(str);
+
+                        if(ints.size() >= 2) {
+                            int index = list.indexOf(str);
+                            list.set(index, String.format(Locale.ROOT, "Chunk: ??? %d ??? [??? ??? in r.???.???.mca]", ints.get(1)));
+                        }
                     }
                 }
             }
@@ -111,21 +126,32 @@ public class HideCoordinatesMixin {
         String underline = String.valueOf(Formatting.UNDERLINE);
 
         CoordinatesYAML config = BlazinHideCoordinatesClient.config;
-        if(config != null && config.getShouldHide(CoordinatesYAML.shouldHideCoordinates) instanceof Boolean bool && bool) {
+        if(config != null && config.getCoordinateVal(CoordinatesYAML.shouldHideCoordinates) instanceof Boolean bool && bool) {
+            boolean shouldHideY = config.getCoordinateVal(CoordinatesYAML.hideYCoordinates) instanceof Boolean hide ? hide : false;
             for(String str : list) {
                 if(str.startsWith(underline + "Targeted Block:")) {
-                    ArrayList<Integer> ints = getInts(str);
-
-                    if(ints.size() >= 2) {
+                    if(shouldHideY) {
                         int index = list.indexOf(str);
-                        list.set(index, underline + "Targeted Block: " + "???" + ", " + String.valueOf(ints.get(1)) + ", " + "???");
+                        list.set(index, underline + "Targeted Block: ???, ???, ???");
+                    }else {
+                        ArrayList<Integer> ints = getInts(str);
+
+                        if(ints.size() >= 2) {
+                            int index = list.indexOf(str);
+                            list.set(index, underline + "Targeted Block: " + "???" + ", " + String.valueOf(ints.get(1)) + ", " + "???");
+                        }
                     }
                 }else if(str.startsWith(underline + "Targeted Fluid:")) {
-                    ArrayList<Integer> ints = getInts(str);
-
-                    if(ints.size() >= 2) {
+                    if(shouldHideY) {
                         int index = list.indexOf(str);
-                        list.set(index, underline + "Targeted Fluid: " + "???" + ", " + String.valueOf(ints.get(1)) + ", " + "???");
+                        list.set(index, underline + "Targeted Fluid: ???, ???, ???");
+                    }else {
+                        ArrayList<Integer> ints = getInts(str);
+
+                        if(ints.size() >= 2) {
+                            int index = list.indexOf(str);
+                            list.set(index, underline + "Targeted Fluid: " + "???" + ", " + String.valueOf(ints.get(1)) + ", " + "???");
+                        }
                     }
                 }
             }

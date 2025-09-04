@@ -31,9 +31,9 @@ public class BlazinHideCoordinatesClient implements ClientModInitializer {
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if (binding.wasPressed()) {
-				if(config.getShouldHide(CoordinatesYAML.shouldHideCoordinates) instanceof Boolean value) {
+				if(config.getCoordinateVal(CoordinatesYAML.shouldHideCoordinates) instanceof Boolean value) {
 					boolean newValue = !value;
-					config.setShouldHide(CoordinatesYAML.shouldHideCoordinates, newValue);
+					config.setCoordinateVal(CoordinatesYAML.shouldHideCoordinates, newValue);
 					config.save();
 
 					if(value) {

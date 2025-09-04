@@ -13,6 +13,7 @@ import java.util.Map;
 public class CoordinatesYAML {
 
     public static final String shouldHideCoordinates = "shouldHideCoordinates";
+    public static final String hideYCoordinates = "hideYCoordinates";
     public static final String configCoordinatesKey = "hideCoordinatesConfig";
 
     private final File file;
@@ -24,6 +25,7 @@ public class CoordinatesYAML {
 
     private void setDefaults() {
         coordinatesConfig.put(shouldHideCoordinates, true);
+        coordinatesConfig.put(hideYCoordinates, false);
 
         save();
     }
@@ -51,15 +53,15 @@ public class CoordinatesYAML {
         }
     }
 
-    public void setShouldHide(String key, Object val) {
-        if(key.equals(shouldHideCoordinates)) {
+    public void setCoordinateVal(String key, Object val) {
+        if(key.equals(shouldHideCoordinates) || key.equals(hideYCoordinates)) {
             if(val instanceof Boolean) {
                 coordinatesConfig.put(key, val);
             }
         }
     }
 
-    public Object getShouldHide(String key) {
+    public Object getCoordinateVal(String key) {
         Object temp = coordinatesConfig.get(key);
         if(temp instanceof Boolean) {
             return temp;
